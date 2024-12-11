@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      text-align: center;
+    }
+    .input-container {
+      margin-bottom: 15px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Certificate Generator</h1>
+    <div class="input-container">
+      <input type="text" id="name" placeholder="Enter Name" />
+    </div>
+    <div class="input-container">
+      <input type="text" id="course" placeholder="Enter Course Name" />
+    </div>
+    <div class="input-container">
+      <input type="text" id="duration" placeholder="Enter Duration" />
+    </div>
+    <div class="input-container">
+      <input type="text" id="date" placeholder="Enter Date of Completion" />
+    </div>
+    <div class="input-container">
+      <input type="text" id="instructor" placeholder="Enter Instructor's Name" />
+    </div>
+    <button onclick="generateCertificate()">Generate Certificate</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function generateCertificate() {
+      const name = document.getElementById('name').value;
+      const course = document.getElementById('course').value;
+      const duration = document.getElementById('duration').value;
+      const date = document.getElementById('date').value;
+      const instructor = document.getElementById('instructor').value;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Generate a unique certificate number
+      const certNumber = "CERT-" + new Date().getTime();
+
+      // Background and Title
+      doc.setFillColor(255, 255, 255);
+      doc.rect(0, 0, 210, 297, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(24);
+      doc.setTextColor(32, 56, 100);
+      doc.text('Certificate of Completion', 105, 50, { align: 'center' });
+
+      // Logo
+      doc.addImage('https://i.ibb.co/dPhZKyt/unnamed.png', 'PNG', 85, 60, 40, 40);
+
+      // Certificate Body
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(16);
+      doc.setTextColor(0, 0, 0);
+      doc.text('This is to certify that', 105, 110, { align: 'center' });
+
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(32, 56, 100);
+      doc.text(name, 105, 130, { align: 'center' });
+
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'normal');
+      doc.text('has successfully completed the course', 105, 150, { align: 'center' });
+
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text(course, 105, 170, { align: 'center' });
+
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Duration: ' + duration, 105, 190, { align: 'center' });
+      doc.text('Date of Completion: ' + date, 105, 210, { align: 'center' });
+
+      // Certificate Number
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'italic');
+      doc.text('Certificate Number: ' + certNumber, 105, 230, { align: 'center' });
+
+      // Company Registration Number
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Company CIN: U92490TG2020PTC140160', 105, 245, { align: 'center' });
+
+      // Signature
+      doc.addImage('https://i.ibb.co/thkQzQg/signature.png', 'PNG', 70, 250, 70, 35);
+
+      // Round Seal (Positioned to the right of the signature)
+      doc.addImage('https://i.ibb.co/DYTx4gN/ARR-Round-seal.jpg', 'JPG', 150, 255, 30, 30);
+
+      // Name Below Signature
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Raghava Ram Adiraju', 105, 285, { align: 'center' });
+
+      // Border
+      doc.setLineWidth(1);
+      doc.rect(10, 10, 190, 277);
+
+      // Save PDF
+      doc.save(`${name}-certificate.pdf`);
+    }
+  </script>
+</body>
+</html>
